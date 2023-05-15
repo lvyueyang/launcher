@@ -1,0 +1,38 @@
+.container {
+  --header-height: 40px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  background-color: #fff;
+  box-sizing: border-box;
+  height: 100%;
+  * {
+    box-sizing: border-box;
+  }
+  .headerBar {
+    border-bottom: 1px solid #ccc;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    .operate {
+      display: flex;
+      span {
+        font-size: 12px;
+        cursor: pointer;
+        padding: 0 6px;
+        display: block;
+        &:hover {
+          color: red;
+        }
+      }
+    }
+  }
+  .body {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    height: calc(100% - var(--header-height));
+    box-sizing: border-box;
+    cursor: auto;
+  }
+}
