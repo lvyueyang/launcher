@@ -39,9 +39,11 @@ export class AppLauncher extends React.Component<AppLauncherProps, AppLauncherSt
     return (
       <>
         {this.state.openList.map((item) => {
+          const Comp = this.props.appList.find((i) => i.key === item.key)?.component;
+          if (!Comp) return null;
           return (
             <AppWindow key={item.id} appWindowId={item.id}>
-              <item.component />
+              <Comp />
             </AppWindow>
           );
         })}

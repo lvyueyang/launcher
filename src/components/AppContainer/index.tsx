@@ -2,19 +2,16 @@ import { launcher, useAppWindow } from '@/launcher';
 import { Rnd } from 'react-rnd';
 import styles from './index.module.less';
 import { createRef, useEffect, useRef } from 'react';
-import { normalize } from 'path';
 
 interface AppWindowProps {}
 export function AppContainer({ children }: React.PropsWithChildren<AppWindowProps>) {
   const { info, close, minimize, maximize, normalize, setSize, setPosition, toFront } =
     useAppWindow();
-  console.log('info: ', info);
   const rndRef = createRef<Rnd>();
   const width = info.size?.width || 600;
   const height = info.size?.height || 300;
 
   useEffect(() => {
-    console.log('info.isMaximize: ', rndRef.current, info.isMaximize);
     if (info.isMaximize) {
       rndRef.current?.updateSize({ width: '100%', height: '100%' });
       rndRef.current?.updatePosition({ x: 0, y: 0 });
@@ -41,7 +38,6 @@ export function AppContainer({ children }: React.PropsWithChildren<AppWindowProp
         setSize({ width: ref.style.width, height: ref.style.height });
       }}
       onDragStop={(e, position) => {
-        console.log('onDragStop: ', position);
         setPosition(position);
       }}
       style={info.isMinimize ? { display: 'none' } : undefined}

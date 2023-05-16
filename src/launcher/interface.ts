@@ -30,7 +30,7 @@ export interface AppItem {
   component: React.FC<any>;
 }
 
-export type OpenAppItem = Omit<AppItem, 'id'> & { id: string };
+export type OpenAppItem = Omit<AppItem, 'id' | 'component'> & { id: string };
 
 export type OpenList = OpenAppItem[];
 

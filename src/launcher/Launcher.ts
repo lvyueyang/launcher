@@ -31,7 +31,10 @@ export class Launcher extends EventEmitter<EventTypes> {
         ...app,
         ...options,
         id: nanoid(),
+        component: void 0,
       };
+      delete info.component;
+
       this.openList.push(info);
 
       this.emit('open', info);
@@ -166,7 +169,6 @@ export class Launcher extends EventEmitter<EventTypes> {
       return i.id === id;
     });
     if (item && index !== this.openList.length - 1) {
-      console.log('toFront: ');
       this.openList.push(item);
       this.openList.splice(index, 1);
       this.openListChange();
