@@ -2,6 +2,7 @@ import { AppLauncher, launcher } from './launcher';
 
 import { Calendar } from './apps/Calendar';
 import { Clock } from './apps/Clock';
+import { AppDock } from './components/AppDock';
 
 export default function Root() {
   return (
@@ -22,7 +23,15 @@ export default function Root() {
           打开时钟
         </button>
       </div>
-      <div style={{ position: 'relative', height: 700, background: '#f7f7f7', overflow: 'hidden' }}>
+      {/* 桌面 */}
+      <div
+        style={{ position: 'relative', height: 700, background: '#f7f7f7', overflow: 'hidden' }}
+        ref={(e) => {
+          if (e) {
+            launcher.setContainer(e);
+          }
+        }}
+      >
         <AppLauncher
           appList={[
             {
@@ -37,6 +46,11 @@ export default function Root() {
             },
           ]}
         />
+      </div>
+
+      {/* 任务栏 */}
+      <div>
+        <AppDock />
       </div>
     </div>
   );

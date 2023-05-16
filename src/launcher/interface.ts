@@ -44,8 +44,6 @@ export type AppOptions = Partial<Omit<AppItem, 'key' | 'id'>>;
 export interface EventTypes {
   open: (value: OpenAppItem) => void;
   close: (value: OpenAppItem) => void;
-  openChange: (openList: OpenAppItem[]) => void;
+  openListChange: (openList: OpenAppItem[]) => void;
   'update:appWindow': (oldValue: OpenAppItem, newValue: OpenAppItem) => void;
-  'update:appMaximize': (oldValue: OpenAppItem, newValue: OpenAppItem) => void;
-  'update:appMinimize': (oldValue: OpenAppItem, newValue: OpenAppItem) => void;
 }

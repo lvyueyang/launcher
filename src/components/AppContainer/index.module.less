@@ -1,20 +1,23 @@
 .container {
   --header-height: 40px;
-  border: 1px solid #ccc;
-  border-bottom: none;
-  background-color: #fff;
+  --bg-primary: #f3f3f3 radial-gradient(#eff4f9 75%, #f3f3f3 100%) no-repeat fixed;
+
   box-sizing: border-box;
   height: 100%;
+  box-shadow: 0 0 6px #00000040;
+  border-radius: 6px;
   * {
     box-sizing: border-box;
   }
   .headerBar {
-    border-bottom: 1px solid #ccc;
     padding: 6px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: var(--header-height);
+    border-radius: 6px 6px 0 0;
+    background: var(--bg-primary);
+    line-height: 1;
     .operate {
       display: flex;
       span {
@@ -30,9 +33,10 @@
   }
   .body {
     padding: 12px;
-    border-bottom: 1px solid #ccc;
+    background-color: #fff;
     height: calc(100% - var(--header-height));
     box-sizing: border-box;
     cursor: auto;
+    border-radius: 0 0 6px 6px;
   }
 }

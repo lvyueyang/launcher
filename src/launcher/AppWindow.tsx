@@ -42,6 +42,9 @@ export function useAppWindow() {
     minimize: () => {
       return launcher.minimize(id);
     },
+    normalize: () => {
+      return launcher.normalize(id);
+    },
     toFront: () => {
       return launcher.toFront(id);
     },

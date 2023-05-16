@@ -12,9 +12,14 @@ type AppList = AppItem[];
 export class Launcher extends EventEmitter<EventTypes> {
   appList: AppList = [];
   openList: OpenList = [];
+  container?: HTMLElement;
 
   register(appList: AppList) {
     this.appList = appList;
+  }
+
+  openListChange() {
+    this.emit('openListChange', this.openList);
   }
 
   /** 打开窗口 */
@@ -30,7 +35,7 @@ export class Launcher extends EventEmitter<EventTypes> {
       this.openList.push(info);
 
       this.emit('open', info);
-      this.emit('openChange', this.openList);
+      this.openListChange();
     }
   }
 
@@ -48,54 +53,66 @@ export class Launcher extends EventEmitter<EventTypes> {
     });
     if (this.openList.length !== oldLen) {
       this.emit('close', oldValue!);
-      this.emit('openChange', this.openList);
+      this.openListChange();
     }
   }
 
   /** 最大化 */
   maximize(id: string) {
-    const { isUpdated, oldValue, newValue } = this.updateOpenOptions(id, {
+    const { isUpdated } = this.updateOpenOptions(id, {
       isMaximize: true,
       isMinimize: false,
     });
     if (isUpdated) {
-      this.emit('update:appMaximize', oldValue!, newValue!);
+      this.openListChange();
     }
   }
 
   /** 最小化 */
   minimize(id: string) {
-    const { isUpdated, oldValue, newValue } = this.updateOpenOptions(id, {
-      isMaximize: false,
+    const { isUpdated } = this.updateOpenOptions(id, {
       isMinimize: true,
     });
     if (isUpdated) {
-      this.emit('update:appMaximize', oldValue!, newValue!);
+      this.openListChange();
+    }
+  }
+  /** 取消最小化 */
+  unminimize(id: string) {
+    const { isUpdated } = this.updateOpenOptions(id, {
+      isMinimize: false,
+    });
+    if (isUpdated) {
+      this.openListChange();
+    }
+  }
+  /** 正常化 */
+  normalize(id: string) {
+    const { isUpdated } = this.updateOpenOptions(id, {
+      isMaximize: false,
+      isMinimize: false,
+    });
+    if (isUpdated) {
+      this.openListChange();
     }
   }
   /** 设置尺寸 */
   setSize(id: string, { width, height }: Pick<AppSize, 'width' | 'height'>) {
-    const { isUpdated, oldValue, newValue } = this.updateOpenOptions(id, {
+    return this.updateOpenOptions(id, {
       size: {
         width,
         height,
       },
     });
-    if (isUpdated) {
-      this.emit('update:appWindow', oldValue!, newValue!);
-    }
   }
   /** 设置位置 */
   setPosition(id: string, { x, y }: { x: number; y: number }) {
-    const { isUpdated, oldValue, newValue } = this.updateOpenOptions(id, {
+    return this.updateOpenOptions(id, {
       position: {
         x,
         y,
       },
     });
-    if (isUpdated) {
-      this.emit('update:appWindow', oldValue!, newValue!);
-    }
   }
 
   /** 更新窗口信息 */
@@ -149,8 +166,10 @@ export class Launcher extends EventEmitter<EventTypes> {
       return i.id === id;
     });
     if (item && index !== this.openList.length - 1) {
+      console.log('toFront: ');
       this.openList.push(item);
       this.openList.splice(index, 1);
+      this.openListChange();
     }
   }
   /** 至于底层 */
@@ -165,6 +184,22 @@ export class Launcher extends EventEmitter<EventTypes> {
     if (item && index > 0) {
       this.openList.unshift(item);
       this.openList.splice(index, 1);
+      this.openListChange();
     }
+  }
+
+  setContainer(dom: HTMLElement) {
+    this.container = dom;
+  }
+
+  getCenter(offsetX: number = 0, offsetY: number = 0) {
+    const { width, height } = this.container?.getBoundingClientRect() || {
+      width: 0,
+      height: 0,
+    };
+    return {
+      x: width / 2 - offsetX,
+      y: height / 2 - offsetY,
+    };
   }
 }

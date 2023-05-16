@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React from 'react';
 import { AppWindow } from './AppWindow';
 import { Launcher } from './Launcher';
 import { AppItem, OpenList } from './interface';
@@ -29,8 +29,7 @@ export class AppLauncher extends React.Component<AppLauncherProps, AppLauncherSt
 
   componentDidMount(): void {
     launcher.register(this.props.appList);
-    launcher.on('openChange', (list) => {
-      console.log('openChange: ', list);
+    launcher.on('openListChange', (list) => {
       this.setState({
         openList: list,
       });
