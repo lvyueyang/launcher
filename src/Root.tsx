@@ -3,25 +3,49 @@ import { AppLauncher, launcher } from './launcher';
 import { Calendar } from './apps/Calendar';
 import { Clock } from './apps/Clock';
 import { AppDock } from './components/AppDock';
+import { AppItem } from './launcher/interface';
+import { RouterDemo } from './apps/routerDemo';
+
+const APP_LIST: AppItem[] = [
+  {
+    title: '日历',
+    key: 'calendar',
+    component: Calendar,
+  },
+  {
+    title: '时钟',
+    key: 'clock',
+    component: Clock,
+    size: {
+      width: 200,
+      height: 200,
+    },
+  },
+  {
+    title: '窗口内路由',
+    key: 'router-demo',
+    component: RouterDemo,
+    size: {
+      width: 400,
+      height: 200,
+    },
+  },
+];
 
 export default function Root() {
   return (
     <div>
-      <div>
-        <button
-          onClick={() => {
-            launcher.open('calendar');
-          }}
-        >
-          打开日历
-        </button>
-        <button
-          onClick={() => {
-            launcher.open('clock');
-          }}
-        >
-          打开时钟
-        </button>
+      <div style={{ display: 'flex', gap: 10, paddingBottom: 10 }}>
+        {APP_LIST.map((item) => (
+          <button
+            key={item.key}
+            onClick={() => {
+              launcher.open(item.key);
+            }}
+          >
+            打开 {item.title}
+          </button>
+        ))}
       </div>
       {/* 桌面 */}
       <div
@@ -32,20 +56,7 @@ export default function Root() {
           }
         }}
       >
-        <AppLauncher
-          appList={[
-            {
-              title: '日历',
-              key: 'calendar',
-              component: Calendar,
-            },
-            {
-              title: '时钟',
-              key: 'clock',
-              component: Clock,
-            },
-          ]}
-        />
+        <AppLauncher appList={APP_LIST} />
       </div>
 
       {/* 任务栏 */}

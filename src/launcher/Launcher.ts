@@ -1,6 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 import { nanoid } from 'nanoid';
 import { AppItem, AppOptions, AppSize, EventTypes, OpenAppItem, OpenList } from './interface';
+import { IRoute } from './router/interface';
 
 const defaultConfig = {
   isMaximize: false,
@@ -203,5 +204,14 @@ export class Launcher extends EventEmitter<EventTypes> {
       x: width / 2 - offsetX,
       y: height / 2 - offsetY,
     };
+  }
+
+  getRouter(id: string) {
+    return this.getInfo(id)?.route;
+  }
+  setRoute(id: string, route: IRoute) {
+    this.updateOpenOptions(id, {
+      route,
+    });
   }
 }

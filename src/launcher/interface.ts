@@ -1,3 +1,5 @@
+import { IRoute } from './router/interface';
+
 export interface AppSize {
   width?: number | string;
   height?: number | string;
@@ -28,6 +30,8 @@ export interface AppItem {
   isMinimize?: boolean;
   /** 关联组件 */
   component: React.FC<any>;
+  /** 当前路由 */
+  route?: IRoute;
 }
 
 export type OpenAppItem = Omit<AppItem, 'id' | 'component'> & { id: string };
