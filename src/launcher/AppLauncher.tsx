@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { AppWindow } from './AppWindow';
 import { Launcher } from './Launcher';
 import { AppItem, OpenList } from './interface';
@@ -39,11 +39,11 @@ export class AppLauncher extends React.Component<AppLauncherProps, AppLauncherSt
     return (
       <>
         {this.state.openList.map((item) => {
-          const Comp = this.props.appList.find((i) => i.key === item.key)?.component;
-          if (!Comp) return null;
+          const component = this.props.appList.find((i) => i.key === item.key)
+            ?.component as React.ReactNode;
           return (
             <AppWindow key={item.id} appWindowId={item.id}>
-              <Comp />
+              <Suspense>{component}</Suspense>
             </AppWindow>
           );
         })}

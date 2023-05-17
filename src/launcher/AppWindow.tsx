@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
 import { launcher } from './AppLauncher';
 import { LauncherWindowContext } from './context';
 import { EventTypes, OpenAppItem } from './interface';

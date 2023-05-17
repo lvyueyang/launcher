@@ -31,11 +31,11 @@ export function RouterDemo() {
         routers={[
           {
             path: '/a',
-            component: PageA,
+            component: <PageA />,
           },
           {
             path: '/b',
-            component: PageB,
+            component: <PageB />,
           },
         ]}
         onInit={(r) => {

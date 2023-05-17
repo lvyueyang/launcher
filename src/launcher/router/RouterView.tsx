@@ -1,14 +1,14 @@
 import { Component, useRef, createContext, useContext } from 'react';
 import { Router } from './Router';
 import { IRoute } from './interface';
-import { LauncherContext, LauncherWindowContext } from '../context';
+import { LauncherWindowContext } from '../context';
 import { launcher } from '../AppLauncher';
 
 interface LauncherRouterContextValue {
-  push: (path: string) => void;
-  replace: (path: string) => void;
-  back: () => void;
-  go: (index?: number) => void;
+  push: Router['push'];
+  replace: Router['replace'];
+  back: Router['back'];
+  go: Router['go'];
 }
 const LauncherRouterContext = createContext<LauncherRouterContextValue>(
   {} as LauncherRouterContextValue,
@@ -31,7 +31,11 @@ export class LauncherRouter extends Component<LauncherRouterProps> {
     this.router.on('change', (route) => {
       this.setState({ current: route });
       if (route) {
-        launcher.setRoute(this.appWindowId, route);
+        const r = {
+          ...route,
+          component: void 0,
+        };
+        launcher.setRoute(this.appWindowId, r);
       }
     });
     const info = launcher.getInfo(this.appWindowId);
@@ -41,7 +45,7 @@ export class LauncherRouter extends Component<LauncherRouterProps> {
   }
 
   render() {
-    const Comp = this.state.current?.component;
+    const component = this.state.current?.component;
     return (
       <LauncherWindowContext.Consumer>
         {({ appWindowId }) => {
@@ -55,7 +59,7 @@ export class LauncherRouter extends Component<LauncherRouterProps> {
                 go: this.router.go,
               }}
             >
-              {Comp ? <Comp /> : null}
+              {component}
             </LauncherRouterContext.Provider>
           );
         }}

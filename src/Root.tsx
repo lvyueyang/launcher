@@ -1,21 +1,27 @@
 import { AppLauncher, launcher } from './launcher';
 
-import { Calendar } from './apps/Calendar';
 import { Clock } from './apps/Clock';
 import { AppDock } from './components/AppDock';
 import { AppItem } from './launcher/interface';
 import { RouterDemo } from './apps/routerDemo';
+import React from 'react';
+
+const Calendar = React.lazy(() => import('./apps/Calendar'));
 
 const APP_LIST: AppItem[] = [
   {
     title: '日历',
     key: 'calendar',
-    component: Calendar,
+    component: (
+      <React.Suspense fallback={<div>加载中...</div>}>
+        <Calendar />
+      </React.Suspense>
+    ),
   },
   {
     title: '时钟',
     key: 'clock',
-    component: Clock,
+    component: <Clock />,
     size: {
       width: 200,
       height: 200,
@@ -24,7 +30,7 @@ const APP_LIST: AppItem[] = [
   {
     title: '窗口内路由',
     key: 'router-demo',
-    component: RouterDemo,
+    component: <RouterDemo />,
     size: {
       width: 400,
       height: 200,

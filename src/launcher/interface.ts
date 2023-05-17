@@ -29,12 +29,17 @@ export interface AppItem {
   /** 是否为最小化 */
   isMinimize?: boolean;
   /** 关联组件 */
-  component: React.FC<any>;
+  component: React.ReactElement;
   /** 当前路由 */
-  route?: IRoute;
+  route?: Omit<IRoute, 'component'>;
+  /** */
+  data?: Record<string, any>;
 }
 
-export type OpenAppItem = Omit<AppItem, 'id' | 'component'> & { id: string };
+export interface OpenAppItem extends Omit<AppItem, 'id' | 'component'> {
+  id: string;
+  component: React.ReactElement;
+}
 
 export type OpenList = OpenAppItem[];
 

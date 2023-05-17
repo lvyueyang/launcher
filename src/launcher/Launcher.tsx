@@ -2,6 +2,8 @@ import { EventEmitter } from 'eventemitter3';
 import { nanoid } from 'nanoid';
 import { AppItem, AppOptions, AppSize, EventTypes, OpenAppItem, OpenList } from './interface';
 import { IRoute } from './router/interface';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const defaultConfig = {
   isMaximize: false,
@@ -20,6 +22,7 @@ export class Launcher extends EventEmitter<EventTypes> {
   }
 
   openListChange() {
+    console.log('openListChange', this.openList);
     this.emit('openListChange', this.openList);
   }
 
@@ -27,14 +30,17 @@ export class Launcher extends EventEmitter<EventTypes> {
   open(key: string, options?: AppOptions) {
     const app = this.appList.find((i) => i.key === key);
     if (app) {
-      const info = {
+      const launcherInfo = {
         ...defaultConfig,
         ...app,
         ...options,
         id: nanoid(),
-        component: void 0,
       };
-      delete info.component;
+
+      const info = {
+        ...launcherInfo,
+        component: React.cloneElement(app.component),
+      };
 
       this.openList.push(info);
 
@@ -137,9 +143,9 @@ export class Launcher extends EventEmitter<EventTypes> {
             ...item.size,
             ...options?.size,
           },
-        };
+        } as OpenAppItem;
         return {
-          ...newValue,
+          ...newValue!,
         };
       }
       return item;
@@ -209,9 +215,48 @@ export class Launcher extends EventEmitter<EventTypes> {
   getRouter(id: string) {
     return this.getInfo(id)?.route;
   }
-  setRoute(id: string, route: IRoute) {
-    this.updateOpenOptions(id, {
+  setRoute(id: string, route: Omit<IRoute, 'component'>) {
+    const { isUpdated } = this.updateOpenOptions(id, {
       route,
+    });
+    if (isUpdated) {
+      this.openListChange();
+    }
+  }
+
+  getData(id: string) {
+    return this.getInfo(id)?.data;
+  }
+  setData(id: string, data: Record<string, any>) {
+    const { isUpdated } = this.updateOpenOptions(id, {
+      data,
+    });
+    if (isUpdated) {
+      this.openListChange();
+    }
+  }
+
+  toJSON() {
+    return JSON.stringify(
+      this.openList.map((item) => {
+        const i = {
+          ...item,
+          component: void 0,
+        };
+        delete i.component;
+        return i;
+      }),
+    );
+  }
+
+  fromJSON(json: string) {
+    this.openList = JSON.parse(json).map((item: Omit<OpenAppItem, 'component'>) => {
+      const i = {
+        ...item,
+        component: this.appList.find((a) => a.key === item.key)?.component,
+      };
+      delete i.component;
+      return i;
     });
   }
 }
