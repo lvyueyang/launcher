@@ -9,6 +9,7 @@ interface LauncherRouterContextValue {
   replace: Router['replace'];
   back: Router['back'];
   go: Router['go'];
+  route: IRoute;
 }
 const LauncherRouterContext = createContext<LauncherRouterContextValue>(
   {} as LauncherRouterContextValue,
@@ -57,6 +58,7 @@ export class LauncherRouter extends Component<LauncherRouterProps> {
                 replace: this.router.replace,
                 back: this.router.back,
                 go: this.router.go,
+                route: this.router.getCurrent(),
               }}
             >
               {component}
@@ -70,10 +72,5 @@ export class LauncherRouter extends Component<LauncherRouterProps> {
 
 export function useHistory() {
   const router = useContext(LauncherRouterContext);
-  return {
-    push: router.push,
-    replace: router.replace,
-    back: router.back,
-    go: router.go,
-  };
+  return router;
 }
