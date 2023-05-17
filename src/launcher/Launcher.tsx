@@ -1,7 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 import { nanoid } from 'nanoid';
 import { AppItem, AppOptions, AppSize, EventTypes, OpenAppItem, OpenList } from './interface';
-import { IRoute } from './router/interface';
+import { IRoute } from '../router/interface';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

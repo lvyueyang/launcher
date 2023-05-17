@@ -39,3 +39,7 @@ declare module '*.module.less';
 declare module '*.module.scss';
 
 declare module '*.module.sass';
+
+declare module 'react-rnd' {
+  export * from 'react-rnd/lib/index.d';
+}

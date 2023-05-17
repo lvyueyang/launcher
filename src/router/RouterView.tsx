@@ -1,8 +1,8 @@
 import { Component, useRef, createContext, useContext } from 'react';
 import { Router } from './Router';
 import { IRoute } from './interface';
-import { LauncherWindowContext } from '../context';
-import { launcher } from '../AppLauncher';
+import { LauncherWindowContext } from '../launcher/context';
+import { launcher } from '../launcher/AppLauncher';
 
 interface LauncherRouterContextValue {
   push: Router['push'];

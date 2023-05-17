@@ -10,7 +10,7 @@ const PORT = 9000;
 const publicPath = `http://localhost:${PORT}${PUBLIC_PATH}`;
 
 module.exports = merge(common, {
-  entry: path.join(__dirname, '../src/index.tsx'),
+  entry: path.join(__dirname, '../demo/index.tsx'),
   mode: 'development',
   output: {
     filename: '[contenthash].js',
@@ -54,7 +54,7 @@ module.exports = merge(common, {
               title: '启动成功',
               titleAlignment: 'center',
               borderStyle: 'classic',
-            })
+            }),
           );
         }, 0);
       }

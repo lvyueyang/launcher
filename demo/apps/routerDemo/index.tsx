@@ -1,14 +1,13 @@
-import { AppContainer } from '@/components/AppContainer';
-import { LauncherRouter } from '@/launcher';
+import React from 'react';
+import { LauncherRouter, Router } from '../../../src';
 import { PageA } from './PageA';
 import { PageB } from './PageB';
 import { useRef } from 'react';
-import { Router } from '@/launcher/router/Router';
 
 export function RouterDemo() {
   const routerRef = useRef<Router>();
   return (
-    <AppContainer>
+    <>
       <div
         style={{ paddingBottom: 15, color: 'blue', cursor: 'pointer', display: 'flex', gap: 10 }}
       >
@@ -42,6 +41,6 @@ export function RouterDemo() {
           routerRef.current = r;
         }}
       />
-    </AppContainer>
+    </>
   );
 }

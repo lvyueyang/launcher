@@ -1,4 +1,4 @@
-import { IRoute } from './router/interface';
+import { IRoute } from '../router/interface';
 
 export interface AppSize {
   width?: number | string;

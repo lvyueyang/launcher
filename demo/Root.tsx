@@ -1,10 +1,10 @@
-import { AppLauncher, launcher } from './launcher';
+import React from 'react';
+import { AppItem, AppLauncher, AppWindowContainer, launcher } from '../src';
 
 import { Clock } from './apps/Clock';
 import { AppDock } from './components/AppDock';
-import { AppItem } from './launcher/interface';
 import { RouterDemo } from './apps/routerDemo';
-import React from 'react';
+import { AppContainer } from './components/AppContainer';
 
 const Calendar = React.lazy(() => import('./apps/Calendar'));
 
@@ -19,15 +19,21 @@ const APP_LIST: AppItem[] = [
       minHeight: 200,
     },
     component: (
-      <React.Suspense fallback={<div>加载中...</div>}>
-        <Calendar />
-      </React.Suspense>
+      <AppContainer>
+        <React.Suspense fallback={<div>加载中...</div>}>
+          <Calendar />
+        </React.Suspense>
+      </AppContainer>
     ),
   },
   {
     title: '时钟',
     key: 'clock',
-    component: <Clock />,
+    component: (
+      <AppContainer>
+        <Clock />
+      </AppContainer>
+    ),
     size: {
       width: 200,
       height: 200,
@@ -36,11 +42,17 @@ const APP_LIST: AppItem[] = [
   {
     title: '窗口内路由',
     key: 'router-demo',
-    component: <RouterDemo />,
     size: {
-      width: 400,
-      height: 200,
+      width: 600,
+      height: 400,
     },
+    component: (
+      <AppContainer>
+        <React.Suspense fallback={<div>加载中...</div>}>
+          <RouterDemo />
+        </React.Suspense>
+      </AppContainer>
+    ),
   },
 ];
 
@@ -59,19 +71,11 @@ export default function Root() {
           </button>
         ))}
       </div>
-      {/* 桌面 */}
-      <div
-        style={{ position: 'relative', height: 700, background: '#f7f7f7', overflow: 'hidden' }}
-        ref={(e) => {
-          if (e) {
-            launcher.setContainer(e);
-          }
-        }}
-      >
-        <AppLauncher appList={APP_LIST} />
-      </div>
 
-      {/* 任务栏 */}
+      {/* 桌面 */}
+      <AppLauncher appList={APP_LIST} style={{ height: 700, background: '#eee' }} />
+
+      {/* 已打开的窗口 */}
       <div>
         <AppDock />
       </div>

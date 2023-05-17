@@ -15,7 +15,7 @@ if (!window.launcher) {
 
 export const launcher = window.launcher;
 
-interface AppLauncherProps {
+interface AppLauncherProps extends React.HTMLAttributes<HTMLDivElement> {
   appList: AppItem[];
 }
 interface AppLauncherState {
@@ -35,19 +35,28 @@ export class AppLauncher extends React.Component<AppLauncherProps, AppLauncherSt
       });
     });
   }
+
   render() {
+    const { appList, ...divProps } = this.props;
     return (
-      <>
+      <div
+        {...divProps}
+        style={{ position: 'relative', overflow: 'hidden', ...divProps.style }}
+        ref={(e) => {
+          if (e) {
+            launcher.setContainer(e);
+          }
+        }}
+      >
         {this.state.openList.map((item) => {
-          const component = this.props.appList.find((i) => i.key === item.key)
-            ?.component as React.ReactNode;
+          const component = appList.find((i) => i.key === item.key)?.component as React.ReactNode;
           return (
             <AppWindow key={item.id} appWindowId={item.id}>
               <Suspense>{component}</Suspense>
             </AppWindow>
           );
         })}
-      </>
+      </div>
     );
   }
 }
