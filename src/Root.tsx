@@ -12,6 +12,12 @@ const APP_LIST: AppItem[] = [
   {
     title: '日历',
     key: 'calendar',
+    size: {
+      width: 600,
+      height: 300,
+      minWidth: 200,
+      minHeight: 200,
+    },
     component: (
       <React.Suspense fallback={<div>加载中...</div>}>
         <Calendar />
