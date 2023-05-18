@@ -1,6 +1,6 @@
 import { IRoute } from '../router/interface';
 
-export interface AppSize {
+export interface WindowSize {
   width?: number | string;
   height?: number | string;
   maxHeight?: number | string;
@@ -9,8 +9,8 @@ export interface AppSize {
   minWidth?: number | string;
 }
 
-/** 应用信息 */
-export interface AppItem {
+/** 窗口信息 */
+export interface WindowItem {
   /** 应用标题 */
   title: string;
   /** 唯一名称 */
@@ -18,7 +18,7 @@ export interface AppItem {
   /** 窗口ID */
   id?: string;
   /** 尺寸 */
-  size?: AppSize;
+  size?: WindowSize;
   /** 位置 */
   position?: {
     x: number;
@@ -36,23 +36,23 @@ export interface AppItem {
   data?: Record<string, any>;
 }
 
-export interface OpenAppItem extends Omit<AppItem, 'id' | 'component'> {
+export interface OpenWindowItem extends Omit<WindowItem, 'id' | 'component'> {
   id: string;
   component: React.ReactElement;
 }
 
-export type OpenList = OpenAppItem[];
+export type OpenList = OpenWindowItem[];
 
 export interface Launcher {
   open: (key: string) => void;
   getInfo: (key: string) => void;
 }
 
-export type AppOptions = Partial<Omit<AppItem, 'key' | 'id'>>;
+export type WindowOptions = Partial<Omit<WindowItem, 'key' | 'id'>>;
 
 export interface EventTypes {
-  open: (value: OpenAppItem) => void;
-  close: (value: OpenAppItem) => void;
-  openListChange: (openList: OpenAppItem[]) => void;
-  'update:appWindow': (oldValue: OpenAppItem, newValue: OpenAppItem) => void;
+  open: (value: OpenWindowItem) => void;
+  close: (value: OpenWindowItem) => void;
+  'change:openList': (openList: OpenWindowItem[]) => void;
+  'update:window': (oldValue: OpenWindowItem, newValue: OpenWindowItem) => void;
 }

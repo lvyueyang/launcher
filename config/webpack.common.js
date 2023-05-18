@@ -1,6 +1,4 @@
 const { EnvironmentPlugin } = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const paths = require('./lib/paths');
@@ -8,7 +6,6 @@ const paths = require('./lib/paths');
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.tsx'),
   output: {
     path: paths.appDist,
     clean: true,
@@ -103,13 +100,8 @@ module.exports = {
     }),
     new EnvironmentPlugin(['NODE_ENV']),
     new ForkTsCheckerWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      minify: true,
-      inject: true,
-    }),
   ],
-  optimization: {
-    runtimeChunk: 'single',
-  },
+  // optimization: {
+  //   runtimeChunk: 'single',
+  // },
 };

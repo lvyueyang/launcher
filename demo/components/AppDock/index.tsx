@@ -1,9 +1,8 @@
-import { launcher } from '@/launcher';
-import { EventTypes, OpenAppItem } from '@/launcher/interface';
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { launcher, OpenWindowItem } from '../../../src';
+import React, { ReactNode } from 'react';
 
 interface AppDockState {
-  list: OpenAppItem[];
+  list: OpenWindowItem[];
 }
 
 export class AppDock extends React.Component<{}, AppDockState> {

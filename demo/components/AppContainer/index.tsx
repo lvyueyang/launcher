@@ -1,17 +1,18 @@
-import { useAppWindow } from '@/launcher';
+import { useCurrentWindow, WindowContainer } from '../../../src';
+// @ts-ignore
 import styles from './index.module.less';
 import React from 'react';
-import { AppWindowContainer } from '../../../src';
 
 export function AppContainer({ children }) {
-  const { info, close, minimize, maximize, normalize, toFront } = useAppWindow();
+  const { info, close, minimize, maximize, normalize, toFront } = useCurrentWindow();
 
   return (
-    <AppWindowContainer
+    <WindowContainer
       className={styles.container}
       onMouseDown={() => {
         toFront();
       }}
+      cancel={`.${styles.body}`}
     >
       <div className={styles.headerBar}>
         <div className={styles.title}>{info?.title}</div>
@@ -52,6 +53,6 @@ export function AppContainer({ children }) {
       >
         {children}
       </div>
-    </AppWindowContainer>
+    </WindowContainer>
   );
 }

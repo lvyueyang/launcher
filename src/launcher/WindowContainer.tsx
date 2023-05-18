@@ -1,15 +1,15 @@
-import { launcher, useAppWindow } from '@/launcher';
+import { launcher } from './WindowLauncher';
 import { Rnd, Props as RndProps } from 'react-rnd';
 import { useEffect, useRef } from 'react';
+import { useCurrentWindow } from './hooks';
 
-interface AppWindowProps
-  extends Omit<RndProps, 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight'> {}
+type WindowContainerProps = RndProps;
 
-export function AppWindowContainer({
+export function WindowContainer({
   children,
   ...rndProps
-}: React.PropsWithChildren<AppWindowProps>) {
-  const { info, setSize, setPosition } = useAppWindow();
+}: React.PropsWithChildren<WindowContainerProps>) {
+  const { info, setSize, setPosition } = useCurrentWindow();
   const rndRef = useRef<Rnd>();
   const width = info.size?.width || 600;
   const height = info.size?.height || 300;

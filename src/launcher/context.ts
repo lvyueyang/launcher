@@ -1,16 +1,16 @@
 import { createContext } from 'react';
-import { AppItem } from './interface';
+import { WindowItem } from './interface';
 
 interface LauncherContextValue {
-  options?: AppItem;
+  options?: WindowItem;
 }
 
 export const LauncherContext = createContext<LauncherContextValue>({});
 
 interface LauncherWindowContext {
-  appWindowId: string;
+  windowId: string;
 }
 
 export const LauncherWindowContext = createContext<LauncherWindowContext>({
-  appWindowId: '',
+  windowId: '',
 });

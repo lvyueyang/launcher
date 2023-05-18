@@ -1,5 +1,6 @@
 const { ProgressPlugin } = require('webpack');
 const { merge } = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const common = require('./webpack.common');
@@ -37,6 +38,11 @@ module.exports = merge(common, {
     },
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      minify: true,
+      inject: true,
+    }),
     new ReactRefreshWebpackPlugin(),
     // 进度条
     new ProgressBarPlugin({

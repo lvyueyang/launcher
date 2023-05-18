@@ -1,11 +1,12 @@
 import React from 'react';
-console.log('日历');
 
 export default function Calendar() {
   return (
-    <>
-      日历
-      <input type="text" />
-    </>
+    <div>
+      <span>日历</span>
+      <div>
+        <input type="text" />
+      </div>
+    </div>
   );
 }

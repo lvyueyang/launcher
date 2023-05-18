@@ -1,8 +1,8 @@
-import { Component, useRef, createContext, useContext } from 'react';
+import { Component, createContext, useContext } from 'react';
 import { Router } from './Router';
 import { IRoute } from './interface';
 import { LauncherWindowContext } from '../launcher/context';
-import { launcher } from '../launcher/AppLauncher';
+import { launcher } from '../launcher/WindowLauncher';
 
 interface LauncherRouterContextValue {
   push: Router['push'];
@@ -21,7 +21,7 @@ interface LauncherRouterProps {
 }
 
 export class LauncherRouter extends Component<LauncherRouterProps> {
-  appWindowId: string = '';
+  windowId: string = '';
   router = new Router(this.props.routers);
   state = {
     current: this.router.getCurrent(),
@@ -36,10 +36,10 @@ export class LauncherRouter extends Component<LauncherRouterProps> {
           ...route,
           component: void 0,
         };
-        launcher.setRoute(this.appWindowId, r);
+        launcher.setRoute(this.windowId, r);
       }
     });
-    const info = launcher.getInfo(this.appWindowId);
+    const info = launcher.getInfo(this.windowId);
     if (info?.route) {
       this.router.push(info.route.path);
     }
@@ -49,8 +49,8 @@ export class LauncherRouter extends Component<LauncherRouterProps> {
     const component = this.state.current?.component;
     return (
       <LauncherWindowContext.Consumer>
-        {({ appWindowId }) => {
-          this.appWindowId = appWindowId;
+        {({ windowId }) => {
+          this.windowId = windowId;
           return (
             <LauncherRouterContext.Provider
               value={{

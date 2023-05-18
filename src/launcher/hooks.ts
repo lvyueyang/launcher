@@ -1,32 +1,20 @@
-import React, { PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
-import { launcher } from './AppLauncher';
+import { useContext, useEffect, useState } from 'react';
+import { EventTypes, WindowItem } from './interface';
 import { LauncherWindowContext } from './context';
-import { EventTypes, OpenAppItem } from './interface';
+import { launcher } from './WindowLauncher';
 
-interface AppWindowProps {
-  appWindowId: string;
-}
-
-export function AppWindow({ appWindowId, children }: PropsWithChildren<AppWindowProps>) {
-  return (
-    <LauncherWindowContext.Provider value={{ appWindowId }}>
-      {children}
-    </LauncherWindowContext.Provider>
-  );
-}
-
-export function useAppWindow() {
-  const { appWindowId: id } = useContext(LauncherWindowContext);
-  const [info, setInfo] = useState<OpenAppItem>(launcher.getInfo(id)!);
+export function useCurrentWindow() {
+  const { windowId: id } = useContext(LauncherWindowContext);
+  const [info, setInfo] = useState<WindowItem>(launcher.getInfo(id)!);
   useEffect(() => {
-    const handler: EventTypes['update:appWindow'] = (_, info) => {
+    const handler: EventTypes['update:window'] = (_, info) => {
       if (info.id === id) {
         setInfo(info);
       }
     };
-    launcher.on('update:appWindow', handler);
+    launcher.on('update:window', handler);
     return () => {
-      launcher.off('update:appWindow', handler);
+      launcher.off('update:window', handler);
     };
   }, []);
 

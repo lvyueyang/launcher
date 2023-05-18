@@ -1,45 +1,50 @@
 import { EventEmitter } from 'eventemitter3';
 import { nanoid } from 'nanoid';
-import { AppItem, AppOptions, AppSize, EventTypes, OpenAppItem, OpenList } from './interface';
+import {
+  WindowItem,
+  WindowOptions,
+  WindowSize,
+  EventTypes,
+  OpenWindowItem,
+  OpenList,
+} from './interface';
 import { IRoute } from '../router/interface';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const defaultConfig = {
   isMaximize: false,
   isMinimize: false,
 };
 
-type AppList = AppItem[];
+type WindowList = WindowItem[];
 
 export class Launcher extends EventEmitter<EventTypes> {
-  appList: AppList = [];
+  windowList: WindowList = [];
   openList: OpenList = [];
   container?: HTMLElement;
 
-  register(appList: AppList) {
-    this.appList = appList;
+  register(windowList: WindowList) {
+    this.windowList = windowList;
   }
 
   openListChange() {
-    console.log('openListChange', this.openList);
-    this.emit('openListChange', this.openList);
+    this.emit('change:openList', this.openList);
   }
 
   /** 打开窗口 */
-  open(key: string, options?: AppOptions) {
-    const app = this.appList.find((i) => i.key === key);
-    if (app) {
+  open(key: string, options?: WindowOptions) {
+    const w = this.windowList.find((i) => i.key === key);
+    if (w) {
       const launcherInfo = {
         ...defaultConfig,
-        ...app,
+        ...w,
         ...options,
         id: nanoid(),
       };
 
       const info = {
         ...launcherInfo,
-        component: React.cloneElement(app.component),
+        component: React.cloneElement(w.component),
       };
 
       this.openList.push(info);
@@ -52,7 +57,7 @@ export class Launcher extends EventEmitter<EventTypes> {
   /** 关闭窗口 */
   close(id: string) {
     const oldLen = this.openList.length;
-    let oldValue: OpenAppItem;
+    let oldValue: OpenWindowItem;
     this.openList = this.openList.filter((i) => {
       if (i.id !== id) {
         return true;
@@ -107,7 +112,7 @@ export class Launcher extends EventEmitter<EventTypes> {
     }
   }
   /** 设置尺寸 */
-  setSize(id: string, { width, height }: Pick<AppSize, 'width' | 'height'>) {
+  setSize(id: string, { width, height }: Pick<WindowSize, 'width' | 'height'>) {
     return this.updateOpenOptions(id, {
       size: {
         width,
@@ -126,10 +131,10 @@ export class Launcher extends EventEmitter<EventTypes> {
   }
 
   /** 更新窗口信息 */
-  updateOpenOptions(id: string, options: AppOptions) {
+  updateOpenOptions(id: string, options: WindowOptions) {
     let isUpdated = false;
-    let oldValue: OpenAppItem | undefined;
-    let newValue: OpenAppItem | undefined;
+    let oldValue: OpenWindowItem | undefined;
+    let newValue: OpenWindowItem | undefined;
     this.openList = this.openList.map((item) => {
       if (item.id === id) {
         isUpdated = true;
@@ -143,7 +148,7 @@ export class Launcher extends EventEmitter<EventTypes> {
             ...item.size,
             ...options?.size,
           },
-        } as OpenAppItem;
+        } as OpenWindowItem;
         return {
           ...newValue!,
         };
@@ -152,7 +157,7 @@ export class Launcher extends EventEmitter<EventTypes> {
     });
 
     if (isUpdated) {
-      this.emit('update:appWindow', oldValue!, newValue!);
+      this.emit('update:window', oldValue!, newValue!);
     }
     return {
       isUpdated,
@@ -168,7 +173,7 @@ export class Launcher extends EventEmitter<EventTypes> {
 
   /** 至于顶层 */
   toFront(id: string) {
-    let item: OpenAppItem | undefined;
+    let item: OpenWindowItem | undefined;
     const index = this.openList.findIndex((i) => {
       if (i.id === id) {
         item = i;
@@ -183,7 +188,7 @@ export class Launcher extends EventEmitter<EventTypes> {
   }
   /** 至于底层 */
   toBack(id: string) {
-    let item: OpenAppItem | undefined;
+    let item: OpenWindowItem | undefined;
     const index = this.openList.findIndex((i) => {
       if (i.id === id) {
         item = i;
@@ -250,10 +255,10 @@ export class Launcher extends EventEmitter<EventTypes> {
   }
 
   fromJSON(json: string) {
-    this.openList = JSON.parse(json).map((item: Omit<OpenAppItem, 'component'>) => {
+    this.openList = JSON.parse(json).map((item: Omit<OpenWindowItem, 'component'>) => {
       const i = {
         ...item,
-        component: this.appList.find((a) => a.key === item.key)?.component,
+        component: this.windowList.find((a) => a.key === item.key)?.component,
       };
       delete i.component;
       return i;

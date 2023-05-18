@@ -1,12 +1,14 @@
 {
-  "name": "react-app-launcher",
+  "name": "react-window-launcher",
   "version": "1.0.1",
   "description": "基于 React 的无路由多窗口工程",
   "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "start": "npm run dev",
     "dev": "cross-env NODE_ENV=development webpack serve --config ./config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.prod.js",
+    "build:demo": "cross-env NODE_ENV=production webpack --config ./config/webpack.demo.js",
     "lint": "eslint src/**",
     "prettier": "prettier --write src/**"
   },

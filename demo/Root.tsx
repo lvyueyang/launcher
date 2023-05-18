@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppItem, AppLauncher, AppWindowContainer, launcher } from '../src';
+import { WindowItem, WindowLauncher, launcher } from '../src';
 
 import { Clock } from './apps/Clock';
 import { AppDock } from './components/AppDock';
@@ -8,7 +8,7 @@ import { AppContainer } from './components/AppContainer';
 
 const Calendar = React.lazy(() => import('./apps/Calendar'));
 
-const APP_LIST: AppItem[] = [
+const APP_LIST: WindowItem[] = [
   {
     title: '日历',
     key: 'calendar',
@@ -73,7 +73,7 @@ export default function Root() {
       </div>
 
       {/* 桌面 */}
-      <AppLauncher appList={APP_LIST} style={{ height: 700, background: '#eee' }} />
+      <WindowLauncher windowList={APP_LIST} style={{ height: 700, background: '#eee' }} />
 
       {/* 已打开的窗口 */}
       <div>
