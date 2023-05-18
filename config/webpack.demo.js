@@ -4,7 +4,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const common = require('./webpack.common');
 const path = require('path');
-const publicPath = `/launcher`;
+const publicPath = `/launcher/`;
 
 module.exports = merge(common, {
   mode: 'production',
