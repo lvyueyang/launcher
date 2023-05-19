@@ -92,20 +92,22 @@ export class Launcher extends EventEmitter<EventTypes> {
       this.openListChange();
     }
   }
-  /** 取消最小化 */
-  unminimize(id: string) {
-    const { isUpdated } = this.updateOpenOptions(id, {
-      isMinimize: false,
-    });
-    if (isUpdated) {
-      this.openListChange();
-    }
-  }
   /** 正常化 */
   normalize(id: string) {
-    const { isUpdated } = this.updateOpenOptions(id, {
+    const info = this.getInfo(id);
+    if (!info) return;
+    const value = {
       isMaximize: false,
       isMinimize: false,
+    };
+
+    if (info.isMinimize) {
+      value.isMinimize = false;
+      value.isMaximize = !!info.isMaximize;
+    }
+
+    const { isUpdated } = this.updateOpenOptions(id, {
+      ...value,
     });
     if (isUpdated) {
       this.openListChange();
@@ -206,6 +208,7 @@ export class Launcher extends EventEmitter<EventTypes> {
     this.container = dom;
   }
 
+  /** 获取容器中心位置 */
   getCenter(offsetX: number = 0, offsetY: number = 0) {
     const { width, height } = this.container?.getBoundingClientRect() || {
       width: 0,
@@ -217,9 +220,11 @@ export class Launcher extends EventEmitter<EventTypes> {
     };
   }
 
+  /** 获取当前路由 */
   getRouter(id: string) {
     return this.getInfo(id)?.route;
   }
+  /** 设置当前路由 */
   setRoute(id: string, route: Omit<IRoute, 'component'>) {
     const { isUpdated } = this.updateOpenOptions(id, {
       route,
@@ -229,9 +234,11 @@ export class Launcher extends EventEmitter<EventTypes> {
     }
   }
 
+  /** 获取窗口自定义数据 */
   getData(id: string) {
     return this.getInfo(id)?.data;
   }
+  /** 设置窗口自定义数据 */
   setData(id: string, data: Record<string, any>) {
     const { isUpdated } = this.updateOpenOptions(id, {
       data,
@@ -241,6 +248,7 @@ export class Launcher extends EventEmitter<EventTypes> {
     }
   }
 
+  /** 将打开的窗口转为 json */
   toJSON() {
     return JSON.stringify(
       this.openList.map((item) => {
@@ -254,6 +262,7 @@ export class Launcher extends EventEmitter<EventTypes> {
     );
   }
 
+  /** 将 json 导入 */
   fromJSON(json: string) {
     this.openList = JSON.parse(json).map((item: Omit<OpenWindowItem, 'component'>) => {
       const i = {

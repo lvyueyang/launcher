@@ -17,10 +17,10 @@ export class AppDock extends React.Component<{}, AppDockState> {
   };
 
   componentDidMount(): void {
-    launcher.on('openListChange', this.updateList);
+    launcher.on('change:openList', this.updateList);
   }
   componentWillUnmount(): void {
-    launcher.off('openListChange', this.updateList);
+    launcher.off('change:openList', this.updateList);
   }
   render(): ReactNode {
     return (
@@ -31,7 +31,7 @@ export class AppDock extends React.Component<{}, AppDockState> {
               key={index}
               style={{ padding: '6px 20px', border: '1px solid #ccc', cursor: 'pointer' }}
               onClick={() => {
-                launcher.unminimize(item.id);
+                launcher.normalize(item.id);
               }}
             >
               {item.title} <span style={{ cursor: 'pointer', color: 'red' }}>x</span>
