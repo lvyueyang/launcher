@@ -53,6 +53,7 @@ export class WindowLauncher extends React.Component<WindowLauncherProps, WindowL
           }
         }}
       >
+        {this.props.children}
         {this.state.openList.map((item) => {
           const component = windowList.find((i) => i.key === item.key)
             ?.component as React.ReactNode;

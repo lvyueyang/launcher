@@ -1,6 +1,6 @@
 {
   "name": "react-window-launcher",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "基于 React 的多窗口启动器，并在窗口中内置路由器",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
